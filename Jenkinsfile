@@ -10,15 +10,17 @@ pipeline {
     stage('Setup & Run') {
       steps {
         sh '''
-          set -eux   # pipefail yoksa sorun çıkmasın
-          python3 -m venv .venv
-          . .venv/bin/activate
-          python --version
-          pip install --upgrade pip
-          pip install -r requirements.txt
-          python scripts/btc_to_csv.py
-          echo "Workspace listesi:"
-          ls -la
+          bash -lc '
+            set -Eeuo pipefail
+            python3 -m venv .venv
+            source .venv/bin/activate
+            python --version
+            pip install --upgrade pip
+            pip install -r requirements.txt
+            python scripts/btc_to_csv.py
+            echo "Workspace:"
+            ls -la
+          '
         '''
       }
     }
